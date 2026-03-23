@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CITE - Center for International Training & Empowerment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafbfc;
+            --bg-dark: #0a1628;
+            --fg: #1a1a1a;
+            --fg-muted: #5a5a5a;
+            --primary-dark: #0a2540;
+            --primary: #1e4a7c;
+            --primary-light: #3b82f6;
+            --accent-orange: #f97316;
+            --accent-yellow: #fbbf24;
+            --accent-gold: #f59e0b;
+            --white: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Gradient Backgrounds */
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            position: relative;
+        }
+
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(249, 115, 22, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(251, 191, 36, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-yellow) 100%);
+        }
+
+        .card-gradient {
+            background: linear-gradient(180deg, var(--white) 0%, #f8fafc 100%);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.6s ease forwards;
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-yellow));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Cards */
+        .course-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(10, 37, 64, 0.12);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-gold) 100%);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--primary-light);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Focus States */
+        .focus-ring:focus-visible {
+            outline: 2px solid var(--accent-orange);
+            outline-offset: 2px;
+        }
+
+        /* Pattern Background */
+        .pattern-bg {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(30, 74, 124, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(249, 115, 22, 0.03) 0%, transparent 50%);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+        /* Category Tags */
+        .category-tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Course Filter */
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm" role="navigation" aria-label="Main navigation">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex items-center gap-3 focus-ring rounded-lg" aria-label="CITE Home">
+                    <img src="https://z-cdn-media.chatglm.cn/files/b9e46e99-f652-4283-8efa-6e594b8d8aac.png?auth_key=1874269021-f98ac2525c674e8eb310b95a2c0a4666-0-89ba3cece1f83919b3d6a3e886c0feb9" alt="CITE Logo" class="h-10 lg:h-12 w-auto">
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#home" class="nav-link text-[var(--primary-dark)] font-semibold focus-ring rounded px-1 active">Home</a>
+                    <a href="#about" class="nav-link text-[var(--fg-muted)] font-medium focus-ring rounded px-1">About Us</a>
+                    <a href="#courses" class="nav-link text-[var(--fg-muted)] font-medium focus-ring rounded px-1">Short Courses</a>
+                    <a href="#contact" class="nav-link text-[var(--fg-muted)] font-medium focus-ring rounded px-1">Contact Us</a>
+                    <a href="#apply" class="btn-primary px-6 py-2.5 rounded-full text-white font-semibold focus-ring">Apply Now</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="lg:hidden p-2 focus-ring rounded-lg" aria-label="Toggle menu" aria-expanded="false" id="menuBtn">
+                    <svg class="w-6 h-6 text-[var(--primary-dark)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu fixed inset-y-0 right-0 w-80 bg-white z-50 shadow-2xl lg:hidden" id="mobileMenu">
+        <div class="p-6">
+            <button class="absolute top-4 right-4 p-2 focus-ring rounded-lg" aria-label="Close menu" id="closeMenuBtn">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="mt-8">
+                <img src="https://z-cdn-media.chatglm.cn/files/b9e46e99-f652-4283-8efa-6e594b8d8aac.png?auth_key=1874269021-f98ac2525c674e8eb310b95a2c0a4666-0-89ba3cece1f83919b3d6a3e886c0feb9" alt="CITE Logo" class="h-12 mb-8">
+            </div>
+            <nav class="flex flex-col gap-1">
+                <a href="#home" class="text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 focus-ring">Home</a>
+                <a href="#about" class="text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 focus-ring">About Us</a>
+                <a href="#courses" class="text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 focus-ring">Short Courses</a>
+                <a href="#contact" class="text-lg font-medium py-3 px-4 rounded-lg hover:bg-gray-50 focus-ring">Contact Us</a>
+                <a href="#apply" class="btn-primary text-center px-6 py-3 rounded-full text-white font-semibold mt-4 focus-ring">Apply Now</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="fixed inset-0 bg-black/40 z-40 hidden lg:hidden" id="menuOverlay"></div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient min-h-screen flex items-center pt-16 lg:pt-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <div class="animate-slide-up" style="animation-delay: 0.1s;">
+                        <span class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white/90 text-sm font-medium rounded-full mb-6 border border-white/20">
+                            <span class="w-2 h-2 bg-[var(--accent-yellow)] rounded-full animate-pulse"></span>
+                            Registration Open for 2026 Courses
+                        </span>
+                    </div>
+                    <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-800 text-white leading-tight mb-6 animate-slide-up" style="animation-delay: 0.2s;">
+                        Empowering Tomorrow's 
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-orange)] to-[var(--accent-yellow)]">Leaders</span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-white/80 mb-8 max-w-xl animate-slide-up" style="animation-delay: 0.3s;">
+                        Transform your career with professional short courses designed for the modern workforce. Join thousands of professionals who have enhanced their skills with CITE.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up" style="animation-delay: 0.4s;">
+                        <a href="#courses" class="btn-primary px-8 py-4 rounded-full text-white font-semibold text-lg focus-ring inline-flex items-center justify-center gap-2">
+                            <span>Explore Courses</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                        <a href="#apply" class="bg-white/10 backdrop-blur-sm border border-white/30 px-8 py-4 rounded-full text-white font-semibold text-lg hover:bg-white/20 transition focus-ring inline-flex items-center justify-center">
+                            Apply Now
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden lg:block animate-slide-up" style="animation-delay: 0.5s;">
+                    <div class="relative">
+                        <div class="absolute -top-8 -right-8 w-64 h-64 bg-[var(--accent-orange)]/20 rounded-full blur-3xl"></div>
+                        <div class="absolute -bottom-8 -left-8 w-48 h-48 bg-[var(--accent-yellow)]/20 rounded-full blur-3xl"></div>
+                        <div class="relative">
+                            <img src="https://z-cdn-media.chatglm.cn/files/31d1c5c5-1cd1-43f0-a006-53533dd411eb.jpeg?auth_key=1874269021-a17faae306e542db8622a0ee4fa8aa5c-0-53bbb64d51d58846eae77ea4fbfb9f1f" alt="CITE Training Session" class="rounded-2xl shadow-2xl w-full h-auto object-cover">
+                            <div class="absolute -bottom-6 -left-6 bg-white rounded-xl p-4 shadow-xl">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-12 h-12 accent-gradient rounded-full flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="font-display font-bold text-[var(--primary-dark)]">35+ Courses</div>
+                                        <div class="text-sm text-[var(--fg-muted)]">Available in 2026</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Decorative Elements -->
+        <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[var(--bg)] to-transparent"></div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center reveal">
+                    <div class="font-display text-3xl lg:text-4xl font-800 text-[var(--primary-dark)]">35+</div>
+                    <div class="text-[var(--fg-muted)] mt-1">Short Courses</div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="font-display text-3xl lg:text-4xl font-800 text-[var(--primary-dark)]">5+</div>
+                    <div class="text-[var(--fg-muted)] mt-1">Years Experience</div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="font-display text-3xl lg:text-4xl font-800 text-[var(--primary-dark)]">1000+</div>
+                    <div class="text-[var(--fg-muted)] mt-1">Professionals Trained</div>
+                </div>
+                <div class="text-center reveal">
+                    <div class="font-display text-3xl lg:text-4xl font-800 text-[var(--primary-dark)]">100%</div>
+                    <div class="text-[var(--fg-muted)] mt-1">Tanzanian Owned</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 lg:py-28 pattern-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <div class="relative">
+                        <div class="absolute -top-4 -left-4 w-full h-full border-2 border-[var(--primary-light)] rounded-2xl"></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <img src="https://z-cdn-media.chatglm.cn/files/b86ef45b-ad6d-4c7b-bba3-2877b96612ab.jpeg?auth_key=1874269021-a7bf10e120b342f29076a5478a834ee4-0-092b1d3d53b4f00efbb581ea02041daa" alt="CITE Training Participants" class="rounded-xl shadow-lg w-full h-48 object-cover">
+                            <img src="https://z-cdn-media.chatglm.cn/files/5c99fb76-0b6f-4fa1-9f29-bd18cf67548a.jpeg?auth_key=1874269021-9f4658c9527c42e29916e52a0ef2854f-0-a00579266419fee49b5e53733908e97f" alt="CITE Workshop Session" class="rounded-xl shadow-lg w-full h-48 object-cover mt-8">
+                            <img src="https://z-cdn-media.chatglm.cn/files/5e0dc620-26a7-4756-8d8b-1e20e25cca5b.jpeg?auth_key=1874269021-bcbbac90cc8a466da0411450e9261bad-0-0b894c781c335a45af3347e3d7987470" alt="CITE Group Photo" class="rounded-xl shadow-lg w-full h-48 object-cover">
+                            <img src="https://z-cdn-media.chatglm.cn/files/9c0eef77-3bf1-4daf-872e-07ceaeda0b33.jpeg?auth_key=1874269021-008e69a5b59649e79fdab0d21024aa3c-0-53087049aa86be8f9167b8b4ecd7209a" alt="GOLD CREST HOTEL" class="rounded-xl shadow-lg w-full h-48 object-cover mt-8">
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <span class="text-[var(--accent-orange)] font-semibold tracking-wide uppercase text-sm">About CITE</span>
+                    <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-800 text-[var(--primary-dark)] mt-3 mb-6">
+                        Building Skills for a Better Future
+                    </h2>
+                    <p class="text-[var(--fg-muted)] mb-6 leading-relaxed">
+                        Center for International Training and Empowerment (CITE) is an indigenous Tanzanian organization registered under the Company's Act of 2002 with registration number 531194. Based in Arusha, we are committed to leveraging intellectual capital to meet the growing needs of modern organizations.
+                    </p>
+                    <p class="text-[var(--fg-muted)] mb-8 leading-relaxed">
+                        We provide standard and tailor-made courses designed to address the challenges faced by modern organizations due to globalization and rapidly evolving technology.
+                    </p>
+
+                    <div class="grid sm:grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-[var(--primary-dark)]">Youth Empowerment</h4>
+                                <p class="text-sm text-[var(--fg-muted)]">Digital currency & leadership training</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-[var(--primary-dark)]">Professional Training</h4>
+                                <p class="text-sm text-[var(--fg-muted)]">Standard & customized courses</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-[var(--primary-dark)]">Technology Focus</h4>
+                                <p class="text-sm text-[var(--fg-muted)]">Entrepreneurship & innovation</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 accent-gradient rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-[var(--primary-dark)]">Tailor-Made Solutions</h4>
+                                <p class="text-sm text-[var(--fg-muted)]">Courses designed for your needs</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Core Values -->
+                    <div class="bg-[var(--primary-dark)] rounded-xl p-6">
+                        <h4 class="font-display font-bold text-white mb-4">Our Core Values</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-white/10 text-white rounded-full text-sm font-medium">Excellence</span>
+                            <span class="px-4 py-2 bg-white/10 text-white rounded-full text-sm font-medium">Trust</span>
+                            <span class="px-4 py-2 bg-white/10 text-white rounded-full text-sm font-medium">Professionalism</span>
+                            <span class="px-4 py-2 bg-white/10 text-white rounded-full text-sm font-medium">Empowerment</span>
+                            <span class="px-4 py-2 bg-white/10 text-white rounded-full text-sm font-medium">Innovation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission & Vision -->
+            <div class="grid md:grid-cols-2 gap-8 mt-16">
+                <div class="reveal bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <div class="w-14 h-14 accent-gradient rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-[var(--primary-dark)] mb-4">Our Mission</h3>
+                    <p class="text-[var(--fg-muted)] leading-relaxed">
+                        To facilitate a conducive learning environment that promotes professional and non-professional knowledge enhancement through tailor-made and standard courses to pursue the full potential of the workforce in modern organizations.
+                    </p>
+                </div>
+                <div class="reveal bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <div class="w-14 h-14 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-[var(--primary-dark)] mb-4">Our Vision</h3>
+                    <p class="text-[var(--fg-muted)] leading-relaxed">
+                        To offer world-class professional and non-professional trainings to individuals and firms to increase efficiency and productivity, as well as Youth empowerment for a brighter future.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-20 lg:py-28 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <span class="text-[var(--accent-orange)] font-semibold tracking-wide uppercase text-sm">2026 Calendar</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-800 text-[var(--primary-dark)] mt-3">
+                    Short Courses
+                </h2>
+                <p class="text-[var(--fg-muted)] mt-4 max-w-2xl mx-auto">
+                    Choose from our comprehensive range of professional development courses. All courses can be customized to meet your specific organizational needs.
+                </p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10 reveal">
+                <button class="filter-btn active px-5 py-2.5 rounded-full border border-gray-200 font-medium text-sm focus-ring" data-filter="all">
+                    All Courses
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-full border border-gray-200 font-medium text-sm text-[var(--fg-muted)] focus-ring" data-filter="leadership">
+                    Leadership
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-full border border-gray-200 font-medium text-sm text-[var(--fg-muted)] focus-ring" data-filter="technology">
+                    Technology
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-full border border-gray-200 font-medium text-sm text-[var(--fg-muted)] focus-ring" data-filter="management">
+                    Management
+                </button>
+                <button class="filter-btn px-5 py-2.5 rounded-full border border-gray-200 font-medium text-sm text-[var(--fg-muted)] focus-ring" data-filter="skills">
+                Professional Skills
+                </button>
+            </div>
+
+            <!-- Course Grid -->
+            <div id="courseGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Courses will be rendered by JavaScript -->
+            </div>
+
+            <div class="text-center mt-12 reveal">
+                <p class="text-[var(--fg-muted)] mb-4">
+                    Courses can be customized to meet customer needs. Venue can be at Arusha or any other place proposed by the client.
+                </p>
+                <a href="#apply" class="btn-primary px-8 py-4 rounded-full text-white font-semibold text-lg focus-ring inline-flex items-center gap-2">
+                    <span>Register for a Course</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 hero-gradient relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="font-display text-3xl sm:text-4xl font-800 text-white mb-4">
+                Ready to Transform Your Career?
+            </h2>
+            <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+                Join hundreds of professionals who have advanced their careers through our professional short courses. Limited seats available for each session.
+            </p>
+            <a href="#apply" class="btn-primary px-10 py-4 rounded-full text-white font-semibold text-lg focus-ring inline-flex items-center gap-2">
+                <span>Apply Now</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 lg:py-28 pattern-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <span class="text-[var(--accent-orange)] font-semibold tracking-wide uppercase text-sm">Get in Touch</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-800 text-[var(--primary-dark)] mt-3">
+                    Contact Us
+                </h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Contact Cards -->
+                <div class="reveal bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center">
+                    <div class="w-16 h-16 accent-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-[var(--primary-dark)] mb-3">Our Location</h3>
+                    <p class="text-[var(--fg-muted)]">
+                        Arusha, Tanzania
+                    </p>
+                </div>
+
+                <div class="reveal bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-[var(--primary-dark)] mb-3">Phone</h3>
+                    <p class="text-[var(--fg-muted)]">
+                        <a href="tel:0713214513" class="hover:text-[var(--accent-orange)] transition">0713214513</a><br>
+                        <a href="tel:0679211994" class="hover:text-[var(--accent-orange)] transition">0679211994</a>
+                    </p>
+                </div>
+
+                <div class="reveal bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center">
+                    <div class="w-16 h-16 accent-gradient rounded-2xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-[var(--primary-dark)] mb-3">Email</h3>
+                    <p class="text-[var(--fg-muted)]">
+                        <a href="mailto:citempowerment@gmail.com" class="hover:text-[var(--accent-orange)] transition">citempowerment@gmail.com</a><br>
+                        <a href="mailto:lilyesta19@yahoo.com" class="hover:text-[var(--accent-orange)] transition">lilyesta19@yahoo.com</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Coordinator Info -->
+            <div class="mt-12 text-center reveal">
+                <div class="inline-block bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <h4 class="font-display text-lg font-bold text-[var(--primary-dark)] mb-2">Course Coordinator</h4>
+                    <p class="text-[var(--fg-muted)] text-lg">Dr. Lilian Minja</p>
+                    <p class="text-[var(--accent-orange)] font-medium mt-1">0713214513 / 0679211994</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apply Now Section -->
+    <section id="apply" class="py-20 lg:py-28 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 reveal">
+                <span class="text-[var(--accent-orange)] font-semibold tracking-wide uppercase text-sm">Join Us</span>
+                <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-800 text-[var(--primary-dark)] mt-3">
+                    Apply Now
+                </h2>
+                <p class="text-[var(--fg-muted)] mt-4">
+                    Fill in the form below to register for your preferred short course. We will contact you with further details.
+                </p>
+            </div>
+
+            <div class="reveal bg-gradient-to-br from-[var(--primary-dark)] to-[var(--primary)] rounded-2xl p-8 lg:p-10">
+                <form id="applyForm" class="space-y-6">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="fullName" class="block text-sm font-semibold text-white mb-2">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-[var(--accent-orange)] focus:border-transparent transition" placeholder="Enter your full name">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-white mb-2">Email Address *</label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-[var(--accent-orange)] focus:border-transparent transition" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-white mb-2">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-[var(--accent-orange)] focus:border-transparent transition" placeholder="e.g., 0712345678">
+                        </div>
+                        <div>
+                            <label for="organization" class="block text-sm font-semibold text-white mb-2">Organization</label>
+                            <input type="text" id="organization" name="organization" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-[var(--accent-orange)] focus:border-transparent transition" placeholder="Your organization (optional)">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="course" class="block text-sm font-semibold text-white mb-2">Select Course *</label>
+                        <select id="course" name="course" required class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:ring-2 focus:ring-[var(--accent-orange)] focus:border-transparent transition">
+                            <option value="" class="text-gray-800">Select a course</option>
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-semibold text-white mb-2">Additional Information</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:ring-2 focus:ring-[var(--accent-orange)] focus:border-transparent transition resize-none" placeholder="Any specific requirements or questions?"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-4 rounded-lg text-white font-semibold text-lg focus-ring">
+                        Submit Application
+                    </button>
+                </form>
+
+                <div id="applySuccess" class="hidden text-center py-8">
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-white mb-3">Application Submitted!</h3>
+                    <p class="text-white/80">Thank you for your interest. Our coordinator will contact you within 24-48 hours with course details and payment information.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--primary-dark)] text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div class="lg:col-span-2">
+                    <img src="https://z-cdn-media.chatglm.cn/files/b9e46e99-f652-4283-8efa-6e594b8d8aac.png?auth_key=1874269021-f98ac2525c674e8eb310b95a2c0a4666-0-89ba3cece1f83919b3d6a3e886c0feb9" alt="CITE Logo" class="h-14 mb-6 brightness-0 invert">
+                    <p class="text-white/70 mb-6 max-w-md">
+                        Center for International Training and Empowerment (CITE) - Empowering individuals and organizations through professional training and development.
+                    </p>
+                    <p class="text-white/50 text-sm">
+                        Registered under Company's Act of 2002<br>
+                        Registration Number: 531194
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-3 text-white/70">
+                        <li><a href="#home" class="hover:text-[var(--accent-orange)] transition">Home</a></li>
+                        <li><a href="#about" class="hover:text-[var(--accent-orange)] transition">About Us</a></li>
+                        <li><a href="#courses" class="hover:text-[var(--accent-orange)] transition">Short Courses</a></li>
+                        <li><a href="#contact" class="hover:text-[var(--accent-orange)] transition">Contact Us</a></li>
+                        <li><a href="#apply" class="hover:text-[var(--accent-orange)] transition">Apply Now</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-lg mb-4">Contact Info</h4>
+                    <ul class="space-y-3 text-white/70">
+                        <li>Arusha, Tanzania</li>
+                        <li>
+                            <a href="tel:0713214513" class="hover:text-[var(--accent-orange)] transition">0713214513</a>
+                        </li>
+                        <li>
+                            <a href="tel:0679211994" class="hover:text-[var(--accent-orange)] transition">0679211994</a>
+                        </li>
+                        <li>
+                            <a href="mailto:citempowerment@gmail.com" class="hover:text-[var(--accent-orange)] transition">citempowerment@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 text-center text-white/50 text-sm">
+                <p>&copy; 2024 Center for International Training and Empowerment. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Course Data
+        const coursesData = [
+            { name: "Administration and Leadership Skills for Modern Management", date: "08-12 June", category: "leadership" },
+            { name: "Leadership Skills and Team Building", date: "25-29 May", category: "leadership" },
+            { name: "Managing Institutional Human Resource and Succession Plan", date: "21-25 September", category: "management" },
+            { name: "Leadership and Policy Formulation", date: "24-28 August", category: "leadership" },
+            { name: "Life after Retirement and Entrepreneurship Skills", date: "Upon Request", category: "skills" },
+            { name: "Performance Management for Drivers and Transport Officers", date: "18-22 May", category: "management" },
+            { name: "Office Assistants and Records Keeping", date: "19-23 October", category: "skills" },
+            { name: "Soft Skills and Customer Retention Strategies", date: "13-17 April & 07-11 September", category: "skills" },
+            { name: "Gender and Development – Building a More Inclusive Society", date: "04-08 May", category: "skills" },
+            { name: "Risk and Mitigation – Hands-on Approach", date: "Upon Request", category: "management" },
+            { name: "Business Etiquette and Public Relations", date: "05-09 October", category: "skills" },
+            { name: "Changing Minds, Changing Lives: Stress Management Series", date: "Upon Request", category: "skills" },
+            { name: "Supervision Mastery: Tools for Managing People and Performance", date: "20-24 April", category: "leadership" },
+            { name: "Recruitment, Interviewing and Onboarding Best Practices", date: "10-14 August", category: "management" },
+            { name: "Customer Care and Communication Strategies", date: "03-06 August", category: "skills" },
+            { name: "Digital Productivity Tools for Office Work", date: "09-13 November", category: "technology" },
+            { name: "Workplace Stress Management & Mental Health Awareness", date: "13-17 July", category: "skills" },
+            { name: "Electronic Records and Records Management", date: "10-14 August", category: "technology" },
+            { name: "Service Quality and Customer Satisfaction", date: "14-18 September", category: "skills" },
+            { name: "Digital Marketing Skills", date: "02-06 November", category: "technology" },
+            { name: "Contract Negotiation and Management", date: "01-05 June", category: "management" },
+            { name: "Insurance and Reinsurance Energy Risks", date: "22-26 June", category: "management" },
+            { name: "Conducting Effective Training Needs Assessment", date: "13-17 April", category: "management" },
+            { name: "Effective Report Writing and Minutes Taking", date: "11-15 May", category: "skills" },
+            { name: "Modern Techniques for Office Management Assistants", date: "25-29 May", category: "skills" },
+            { name: "Mastering Public Speaking and Professional Presentation Skills", date: "30 March – 01 April", category: "skills" },
+            { name: "Youth Empowerment and Leadership Development for the Future", date: "13-17 April", category: "leadership" },
+            { name: "M&E for Strategic Result", date: "23-27 March", category: "management" },
+            { name: "Electronic Records and Records Management", date: "16-20 February", category: "technology" },
+            { name: "Artificial Intelligence Skills", date: "2-4 March, 23-25 March, 28-30 April & 20-22 July", category: "technology" },
+            { name: "Management and Implementation of Online Meeting", date: "Upon Request / Online", category: "technology" },
+            { name: "E-Government", date: "Upon Request", category: "technology" },
+            { name: "ICT Management", date: "23-27 November", category: "technology" },
+            { name: "Digital Content Creation and Social Media Strategy", date: "27-30 April, 01-04 June, 17-20 August & 26-29 October", category: "technology" },
+            { name: "Introduction of Cyberlaw and Digital Security", date: "10-14 August", category: "technology" },
+            { name: "Click Code and Law: Understanding Cyberlaw", date: "15-19 October", category: "technology" }
+        ];
+
+        const categoryColors = {
+            leadership: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+            technology: { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
+            management: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+            skills: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' }
+        };
+
+        const categoryLabels = {
+            leadership: 'Leadership',
+            technology: 'Technology',
+            management: 'Management',
+            skills: 'Professional Skills'
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCourses();
+            populateCourseSelect();
+            initScrollReveal();
+            initMobileMenu();
+            initFilters();
+            initApplyForm();
+        });
+
+        // Render Courses
+        function renderCourses(filter = 'all') {
+            const grid = document.getElementById('courseGrid');
+            if (!grid) return;
+
+            const filteredCourses = filter === 'all' 
+                ? coursesData 
+                : coursesData.filter(c => c.category === filter);
+
+            grid.innerHTML = filteredCourses.map((course, index) => {
+                const colors = categoryColors[course.category];
+                return `
+                    <div class="course-card reveal card-gradient rounded-xl p-6 border border-gray-100 shadow-sm" data-category="${course.category}" style="transition-delay: ${Math.min(index * 0.05, 0.3)}s">
+                        <div class="flex items-start justify-between mb-4">
+                            <span class="category-tag ${colors.bg} ${colors.text} px-3 py-1 rounded-full font-semibold uppercase">
+                                ${categoryLabels[course.category]}
+                            </span>
+                            <div class="w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 ${colors.text}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-display font-bold text-[var(--primary-dark)] text-lg mb-3 leading-tight">
+                            ${course.name}
+                        </h3>
+                        <div class="flex items-center gap-2 text-[var(--accent-orange)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="font-medium text-sm">${course.date}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Re-init reveal for new elements
+            initScrollReveal();
+        }
+
+        // Populate Course Select in Form
+        function populateCourseSelect() {
+            const select = document.getElementById('course');
+            if (!select) return;
+
+            coursesData.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.name;
+                option.textContent = `${course.name} (${course.date})`;
+                select.appendChild(option);
+            });
+        }
+
+        // Scroll Reveal
+        function initScrollReveal() {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (prefersReducedMotion) {
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+                return;
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.reveal:not(.active)').forEach(el => observer.observe(el));
+        }
+
+        // Mobile Menu
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('menuBtn');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+
+            if (!menuBtn || !mobileMenu) return;
+
+            function openMenu() {
+                mobileMenu.classList.add('open');
+                menuOverlay.classList.remove('hidden');
+                menuBtn.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                mobileMenu.classList.remove('open');
+                menuOverlay.classList.add('hidden');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+
+            menuBtn.addEventListener('click', openMenu);
+            if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMenu);
+            if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+
+        // Filter Buttons
+        function initFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.dataset.filter;
+
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.classList.add('text-[var(--fg-muted)]');
+                    });
+                    btn.classList.add('active');
+                    btn.classList.remove('text-[var(--fg-muted)]');
+
+                    renderCourses(filter);
+                });
+            });
+        }
+
+        // Apply Form
+        function initApplyForm() {
+            const form = document.getElementById('applyForm');
+            const success = document.getElementById('applySuccess');
+
+            if (!form) return;
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                form.classList.add('hidden');
+                success.classList.remove('hidden');
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
